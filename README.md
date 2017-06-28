@@ -23,6 +23,21 @@ dcp1610-scan --color -H 0.5 -d 400 -o mypage.png
 
 See `dcp1610-scan -h` for the list of parameters.
 
+## Known bugs/planned features
+
+##### Scanner discovery
+Yeah, typing ip address is boring. Scanner discovery is possible via SNMP.
+
+##### Hardcoded model-specific things
+The script probably will not work well with non-flatbed scanners (they have extra "next page" message, I don't know how it looks like and how should I handle it).
+Also supported scanning modes may differ from model to model
+
+##### It is slow!
+The bottleneck for high-res full page scans is network data transfer (you can hear how it stops when some internal buffer is full), need to implement support for compressed images.
+
+##### Scan button
+It is possible to make a "daemon mode" listening for device's scan button.
+
 ## Q&A
 
 ##### Will it work with my scanner?
