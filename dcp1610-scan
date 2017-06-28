@@ -1,0 +1,43 @@
+#! /usr/bin/env python3
+
+import argparse
+import logging
+import dcp1610.protocol
+
+logger = logging.getLogger(__name__)
+
+
+def main():
+
+    prs = argparse.ArgumentParser()
+    prs.add_argument('-d', '--dpi', default=100, type=int,
+                     help="Scan resolution. If the scanner does not support specified value, the best matching supported one will be used")
+    prs.add_argument('--color', action='store_true',
+                     help="Color scan")
+    prs.add_argument('-X', default='0.0', type=float,
+                     help="Origin X. Float in range (0,1) means fraction of page, integer > 1 is pixels")
+    prs.add_argument('-Y', default='0.0', type=float,
+                     help="Origin Y")
+    prs.add_argument('-W', default='1.0', type=float,
+                     help="Image width, pixels or fraction of page size")
+    prs.add_argument('-H', default='1.0', type=float,
+                     help="Image height, pixels or fraction of page size")
+    prs.add_argument('-v', action='store_true',
+                     help="Pring more logs")
+    prs.add_argument('-o', '--output', default="scan.png",
+                     help="Output file name")
+    prs.add_argument('address', help="Scanner ip address/hostname, required argument")
+
+    args = prs.parse_args()
+
+    logging.basicConfig(format='[%(asctime)s] %(message)s',
+                        level=logging.DEBUG if args.v else logging.INFO)
+
+    task = dcp1610.protocol.ScanTask(args.address, args.W, args.H, args.X, args.Y, args.dpi,
+                                     dcp1610.protocol.MODE_CGRAY if args.color else dcp1610.protocol.MODE_GRAY64)
+
+    task.do_scan(args.output)
+
+if __name__ == '__main__':
+    main()
+
