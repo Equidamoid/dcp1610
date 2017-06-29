@@ -3,6 +3,7 @@
 import argparse
 import logging
 import dcp1610.protocol
+import dcp1610.discovery
 
 logger = logging.getLogger(__name__)
 
@@ -26,14 +27,19 @@ def main():
                      help="Pring more logs")
     prs.add_argument('-o', '--output', default="scan.png",
                      help="Output file name")
-    prs.add_argument('address', help="Scanner ip address/hostname, required argument")
+    prs.add_argument('address', help="Scanner ip address/hostname, required argument", nargs='?')
 
     args = prs.parse_args()
 
     logging.basicConfig(format='[%(asctime)s] %(message)s',
                         level=logging.DEBUG if args.v else logging.INFO)
 
-    task = dcp1610.protocol.ScanTask(args.address, args.W, args.H, args.X, args.Y, args.dpi,
+    address = args.address
+    if not address:
+        address, name = dcp1610.discovery.find_scanner()
+        logger.info("No address specified, using discovered %s (%s)", name, address)
+
+    task = dcp1610.protocol.ScanTask(address, args.W, args.H, args.X, args.Y, args.dpi,
                                      dcp1610.protocol.MODE_CGRAY if args.color else dcp1610.protocol.MODE_GRAY64)
 
     task.do_scan(args.output)

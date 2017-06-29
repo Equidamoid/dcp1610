@@ -11,5 +11,6 @@ setup(
     url='https://',
     packages=['dcp1610'],
     scripts=['dcp1610-scan'],
+    requires=['easysnmp', 'zeroconf', 'Pillow']
 )
 
