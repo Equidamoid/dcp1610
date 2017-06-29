@@ -6,7 +6,7 @@ logger = logging.getLogger(__name__)
 
 class PilBuffer(object):
     def get_image(self):
-        raise NotImplemented()
+        raise NotImplementedError()
 
     def save(self, filename):
         self.get_image().save(filename)
