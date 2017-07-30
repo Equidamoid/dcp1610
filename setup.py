@@ -8,7 +8,7 @@ setup(
     description="Brother network scanner protocol implementation",
     author='Vladimir Shapranov',
     author_email='equidamoid@gmail.com',
-    url='https://',
+    url='https://github.com/Equidamoid/dcp1610',
     packages=['dcp1610'],
     scripts=['dcp1610-scan'],
     requires=['easysnmp', 'zeroconf', 'Pillow']
